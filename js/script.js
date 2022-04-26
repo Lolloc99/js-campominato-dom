@@ -76,6 +76,15 @@ document.getElementById("play-btn").addEventListener("click",
             cellsNumber = 49;
         }
 
+        // Array con le 16 bombe
+        const bombsNumber = 16;
+        let bombsArray = rndBombsGenerator (bombsNumber, cellsNumber);
+        //Cheat
+        console.log("Le caselle bomba sono:", bombsArray);
+
+        //Creare un array vuoto "Punteggio" in cui andranno i numeri cliccati che non avevano una bomba all'interno
+        const score = [];
+
         // Generare le celle all'interno della griglia a seconda della difficoltà scelta
         for (let i = 1; i <= cellsNumber; i++) {
             const gridCont = document.getElementById("gridContainer");
@@ -91,26 +100,34 @@ document.getElementById("play-btn").addEventListener("click",
             }
 
             // Cliccando su una casella si aggiunge la classe "active"
+            /* Edit post consegna 2: nel momento del click, il programma legge il numero interno alla casella (quindi il testo dello span) e lo allega ad una variabile
+            SE quel numero NON si trova nell'array delle bombe, gli verrà data la classe "active" e verrà pushato nell'array "score"
+            ALTRIMENTI SE quel numero si trova dentro l'array delle bombe allora gli verrà data la classe "bomb" e partirà l'alert di Game Over
+            */
             newDiv.addEventListener("click", function() {
-                this.classList.add("active");
+                const tileNum = parseInt(this.querySelector("span").textContent);
+                console.log(tileNum);
+                if (!bombsArray.includes(tileNum)) {
+                    this.classList.add("active");
+                    this.style.pointerEvents = "none";
+                    score.push(tileNum);
+                } else if (bombsArray.includes(tileNum)) {
+                    this.classList.add("bomb");
+                    gridContainer.style.pointerEvents = "none";
+                    alert("Game Over");
+                }
+
             });
 
             gridCont.append(newDiv);
         }
-
+        
+        console.log("Punteggio:", score.length);
         // Per sostituire la scritta iniziale con la griglia:
-        document.getElementById("game-main").classList.remove("d-none")
-        document.getElementById("start-title").classList.add("d-none")
-
-        // Array con le 16 bombe
-        const bombsNumber = 16;
-        let bombsArray = rndBombsGenerator (bombsNumber, cellsNumber)
-
-        //Cheat
-        console.log("il bombsArray contiene:", bombsArray);
+        document.getElementById("game-main").classList.remove("d-none");
+        document.getElementById("start-title").classList.add("d-none");
     }
 );
-
 
 // FUNCTIONS
 /*
