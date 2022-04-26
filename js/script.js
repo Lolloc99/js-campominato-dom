@@ -90,7 +90,9 @@ document.getElementById("play-btn").addEventListener("click",
         const bombsNumber = 16;
         let bombsArray = rndBombsGenerator (bombsNumber, cellsNumber);
         //Cheat
-        console.log("Le caselle bomba sono:", bombsArray);
+        console.log("Le caselle bomba sono:", bombsArray.sort);
+
+        const target = cellsNumber - bombsNumber;
 
         // Generare le celle all'interno della griglia a seconda della difficoltà scelta
         for (let i = 1; i <= cellsNumber; i++) {
@@ -118,6 +120,12 @@ document.getElementById("play-btn").addEventListener("click",
                     this.classList.add("active");
                     this.style.pointerEvents = "none";
                     score.push(tileNum);
+                    console.log("length", score.length, "target", target);
+                    if (score.length >= target) {
+                        gridContainer.style.pointerEvents = "none";
+                    document.getElementById("gameOverString").classList.remove("d-none")
+                    document.getElementById("gameOverString").innerHTML = `${"La partita è stata vinta! Punteggio totalizzato:"} ${score.length}`
+                    }
                 } else if (bombsArray.includes(tileNum)) {
                     this.classList.add("bomb");
                     gridContainer.style.pointerEvents = "none";
@@ -127,7 +135,7 @@ document.getElementById("play-btn").addEventListener("click",
                 }
 
             });
-
+            
             gridCont.append(newDiv);
         }
         
@@ -169,4 +177,4 @@ Descrizione: Genera numeri casuali
 */
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
-  }
+}
