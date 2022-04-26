@@ -65,7 +65,7 @@ document.getElementById("play-btn").addEventListener("click",
         const challenge = document.getElementById('difficulty').value;
         console.log(challenge);
 
-        let cellsNumber = 0;
+        let cellsNumber;
 
         // Assegno il numero di griglie necessarie
         if (challenge === "easy") {
@@ -101,8 +101,45 @@ document.getElementById("play-btn").addEventListener("click",
         // Per sostituire la scritta iniziale con la griglia:
         document.getElementById("game-main").classList.remove("d-none")
         document.getElementById("start-title").classList.add("d-none")
+
+        // Array con le 16 bombe
+        const bombsNumber = 16;
+        let bombsArray = rndBombsGenerator (bombsNumber, cellsNumber)
+
+        //Cheat
+        console.log("il bombsArray contiene:", bombsArray);
     }
 );
 
 
 // FUNCTIONS
+/*
+Descrizione: Crea un array di numeri casuali non ripetuti
+    Dato 1: numero massimo di elementi da creare → "bombsMax"
+    Dato 2: range massimo di numeri da prendere → "cellsMax"
+    Return: array[n*cellsMax]
+*/
+function rndBombsGenerator(bombsMax, cellsMax) {
+    const bombsContainer = [];
+
+    let i = 0;
+    while (i < bombsMax) {
+        let rndNumber = getRndInteger (1, cellsMax);
+        if (!bombsContainer.includes(rndNumber))  {
+            bombsContainer.push(rndNumber)
+            i++;
+        }
+    }
+
+    return bombsContainer;
+}
+
+/*
+Descrizione: Genera numeri casuali
+    Dato 1: range numero minimo → "min"
+    Dato 2: range numero massimo → "max"
+    Return: numero casuale compreso tra "min" e "max"
+*/
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
+  }
