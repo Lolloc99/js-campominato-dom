@@ -133,8 +133,7 @@ main {
     background-color: #ff0000;
 }
 
-#game-over-string {
-    /* display: none; */
+#gameOverString {
     text-align: center;
     margin: 1rem;
 }

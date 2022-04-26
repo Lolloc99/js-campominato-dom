@@ -55,12 +55,22 @@ Setp by step personale
 *
 */
 
+//Creare un array vuoto "Punteggio" in cui andranno i numeri cliccati che non avevano una bomba all'interno
+let score = [];
+
 // Bottone da cliccare per iniziare il gioco 
 document.getElementById("play-btn").addEventListener("click",
     function () {
         // Genero la griglia di gioco
+        // Refresh
         const gridContainerMaker = document.getElementById("gridContainer");
         gridContainerMaker.innerHTML = "";
+
+        const gameOverMessage = document.getElementById("gameOverString");
+        gameOverMessage.innerHTML = "";
+        document.getElementById("gameOverString").classList.add("d-none")
+        gridContainer.style.pointerEvents = "initial";
+        score = [];
 
         const challenge = document.getElementById('difficulty').value;
         console.log(challenge);
@@ -81,9 +91,6 @@ document.getElementById("play-btn").addEventListener("click",
         let bombsArray = rndBombsGenerator (bombsNumber, cellsNumber);
         //Cheat
         console.log("Le caselle bomba sono:", bombsArray);
-
-        //Creare un array vuoto "Punteggio" in cui andranno i numeri cliccati che non avevano una bomba all'interno
-        const score = [];
 
         // Generare le celle all'interno della griglia a seconda della difficoltà scelta
         for (let i = 1; i <= cellsNumber; i++) {
@@ -114,7 +121,9 @@ document.getElementById("play-btn").addEventListener("click",
                 } else if (bombsArray.includes(tileNum)) {
                     this.classList.add("bomb");
                     gridContainer.style.pointerEvents = "none";
-                    alert("Game Over");
+                    console.log("Punteggio:", score.length);
+                    document.getElementById("gameOverString").classList.remove("d-none")
+                    document.getElementById("gameOverString").innerHTML = `${"La partita si è conclusa, punteggio totalizzato:"} ${score.length}`
                 }
 
             });
@@ -122,12 +131,13 @@ document.getElementById("play-btn").addEventListener("click",
             gridCont.append(newDiv);
         }
         
-        console.log("Punteggio:", score.length);
         // Per sostituire la scritta iniziale con la griglia:
         document.getElementById("game-main").classList.remove("d-none");
         document.getElementById("start-title").classList.add("d-none");
     }
 );
+
+
 
 // FUNCTIONS
 /*
