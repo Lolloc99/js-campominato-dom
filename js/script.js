@@ -62,12 +62,13 @@ let score = [];
 document.getElementById("play-btn").addEventListener("click",
     function () {
         // Genero la griglia di gioco
-        // Refresh
+        // Reset
         const gridContainerMaker = document.getElementById("gridContainer");
         gridContainerMaker.innerHTML = "";
 
         const gameOverMessage = document.getElementById("gameOverString");
         gameOverMessage.innerHTML = "";
+
         document.getElementById("gameOverString").classList.add("d-none")
         gridContainer.style.pointerEvents = "initial";
         score = [];
@@ -75,22 +76,14 @@ document.getElementById("play-btn").addEventListener("click",
         const challenge = document.getElementById('difficulty').value;
         console.log(challenge);
 
-        let cellsNumber;
-
-        // Assegno il numero di griglie necessarie
-        if (challenge === "easy") {
-            cellsNumber = 100;
-        } else if (challenge === "medium") {
-            cellsNumber = 81;
-        } else if (challenge === "hard") {
-            cellsNumber = 49;
-        }
+        // Imposto la corrispondenza tra difficoltà e numero di celle
+        let cellsNumber =  difficultyAdapter(challenge);
 
         // Array con le 16 bombe
         const bombsNumber = 16;
         let bombsArray = rndBombsGenerator (bombsNumber, cellsNumber);
-        //Cheat
-        console.log("Le caselle bomba sono:", bombsArray.sort);
+        // Cheat
+        console.log("Le caselle bomba sono:", bombsArray);
 
         const target = cellsNumber - bombsNumber;
 
@@ -120,11 +113,10 @@ document.getElementById("play-btn").addEventListener("click",
                     this.classList.add("active");
                     this.style.pointerEvents = "none";
                     score.push(tileNum);
-                    console.log("length", score.length, "target", target);
                     if (score.length >= target) {
                         gridContainer.style.pointerEvents = "none";
-                    document.getElementById("gameOverString").classList.remove("d-none")
-                    document.getElementById("gameOverString").innerHTML = `${"La partita è stata vinta! Punteggio totalizzato:"} ${score.length}`
+                        document.getElementById("gameOverString").classList.remove("d-none")
+                        document.getElementById("gameOverString").innerHTML = `${"La partita è stata vinta! Punteggio totalizzato:"} ${score.length}`
                     }
                 } else if (bombsArray.includes(tileNum)) {
                     this.classList.add("bomb");
@@ -145,9 +137,25 @@ document.getElementById("play-btn").addEventListener("click",
     }
 );
 
-
-
 // FUNCTIONS
+
+/*
+Descrizione: Imposta il numero di celle totali in base alla difficoltà inserita
+    Dato 1: difficoltà
+    Return: cellsNumber
+*/
+function difficultyAdapter(grade) {
+    if (grade === "easy") {
+        cellsNum = 100;
+    } else if (grade === "medium") {
+        cellsNum = 81;
+    } else if (grade === "hard") {
+        cellsNum = 49;
+    }
+
+    return cellsNum;
+}
+
 /*
 Descrizione: Crea un array di numeri casuali non ripetuti
     Dato 1: numero massimo di elementi da creare → "bombsMax"
