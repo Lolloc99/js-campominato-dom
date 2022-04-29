@@ -81,7 +81,7 @@ document.getElementById("play-btn").addEventListener("click",
 
         // Array con le 16 bombe
         const bombsNumber = 16;
-        let bombsArray = rndBombsGenerator (bombsNumber, cellsNumber);
+        const bombsArray = rndBombsGenerator (bombsNumber, cellsNumber);
         // Cheat
         console.log("Le caselle bomba sono:", bombsArray);
 
@@ -91,6 +91,7 @@ document.getElementById("play-btn").addEventListener("click",
         for (let i = 1; i <= cellsNumber; i++) {
             const gridCont = document.getElementById("gridContainer");
             const newDiv = document.createElement("div");
+            newDiv.classList.add('cell');
             newDiv.innerHTML = `<span>${i}</span>`
             // L'if decide quali classi affidare alle caselle a seconda della challenge (ergo la difficoltà impostata)
             if (challenge === "easy") {
@@ -118,8 +119,16 @@ document.getElementById("play-btn").addEventListener("click",
                         document.getElementById("gameOverString").classList.remove("d-none")
                         document.getElementById("gameOverString").innerHTML = `${"La partita è stata vinta! Punteggio totalizzato:"} ${score.length}`
                     }
-                } else if (bombsArray.includes(tileNum)) {
-                    this.classList.add("bomb");
+                } else if (bombsArray.includes(tileNum)) {     
+                    const allCells = document.querySelectorAll(".cell");
+                    for (let i = 0; i < cellsNumber; i++) {             
+                        const numCell = parseInt(allCells[i].textContent);
+                        
+                        if (bombsArray.includes(numCell)) {
+                            allCells[i].classList.add("bomb");
+                        }
+                    }
+                    
                     gridContainer.style.pointerEvents = "none";
                     console.log("Punteggio:", score.length);
                     document.getElementById("gameOverString").classList.remove("d-none")
@@ -165,12 +174,12 @@ Descrizione: Crea un array di numeri casuali non ripetuti
 function rndBombsGenerator(bombsMax, cellsMax) {
     const bombsContainer = [];
 
-    let i = 0;
-    while (i < bombsMax) {
+    let bombIndex = 0;
+    while (bombIndex < bombsMax) {
         let rndNumber = getRndInteger (1, cellsMax);
         if (!bombsContainer.includes(rndNumber))  {
             bombsContainer.push(rndNumber)
-            i++;
+            bombIndex++;
         }
     }
 

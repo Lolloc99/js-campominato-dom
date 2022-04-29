@@ -128,6 +128,11 @@ main {
     background-color: #6495ed;
 }
 
+.firstBomb {
+    color: white;
+    background-color: #ff0000;
+}
+
 .bomb {
     color: black;
     background-color: #ff0000;
